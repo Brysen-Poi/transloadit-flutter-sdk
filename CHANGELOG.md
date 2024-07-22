@@ -1,3 +1,9 @@
+### 0.2.2
+
+- Change `tus_client` to `tusc`, to handle onResumed, onPaused, onCancel
+- Update `http` from `0.13.3` to `1.2.2`
+- Update `cross_file` from `0.3.1` to `0.3.4+1`
+
 ## 0.2.1
 
 - Make POST requests use `en-US` to fix bug when non-latin characters are used
