@@ -39,16 +39,12 @@ MaterialColor transloaditLight = MaterialColor(0xFF0078D1, light);
 
 ColorScheme colorScheme = ColorScheme(
     primary: transloaditDark,
-    primaryVariant: dark[500]!,
     secondary: transloaditLight,
-    secondaryVariant: light[200]!,
     surface: Colors.white,
-    background: Colors.white,
     error: Colors.redAccent,
     onPrimary: Colors.white,
     onSecondary: Colors.white,
     onSurface: transloaditDark,
-    onBackground: transloaditDark,
     onError: Colors.white,
     brightness: Brightness.light);
 
@@ -58,7 +54,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Transloadit Demo',
       theme: ThemeData(
-          // Define the default brightness and colors.
+        // Define the default brightness and colors.
           brightness: Brightness.light,
           colorScheme: colorScheme,
           sliderTheme: SliderThemeData(
@@ -66,7 +62,7 @@ class MyApp extends StatelessWidget {
             activeTrackColor: colorScheme.primary,
             activeTickMarkColor: colorScheme.primary,
             thumbColor: colorScheme.primary,
-            inactiveTrackColor: colorScheme.secondaryVariant,
+            inactiveTrackColor: colorScheme.secondary,
             inactiveTickMarkColor: Colors.transparent,
             valueIndicatorShape: PaddleSliderValueIndicatorShape(),
           )),
@@ -133,6 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
       });
 
       TransloaditResponse response = await assembly.createAssembly(
+        Duration(seconds: 10),
         onProgress: (progressValue) {
           print(progressValue);
           setState(() {
@@ -331,22 +328,22 @@ class TransloaditImage extends StatelessWidget {
           Container(color: Colors.grey[200]),
           isProcessing
               ? uploadComplete
-                  ? CircularProgressIndicator()
-                  : Align(
-                      alignment: Alignment.bottomCenter,
-                      child: LinearProgressIndicator(
-                        color: transloaditDark,
-                        backgroundColor: transloaditLight[200],
-                        value: progress / 100,
-                      ),
-                    )
+              ? CircularProgressIndicator()
+              : Align(
+            alignment: Alignment.bottomCenter,
+            child: LinearProgressIndicator(
+              color: transloaditDark,
+              backgroundColor: transloaditLight[200],
+              value: progress / 100,
+            ),
+          )
               : imageURL != null
-                  ? Image.network(imageURL!)
-                  : image != null
-                      ? Image.file(image!)
-                      : Image(
-                          image: AssetImage('assets/transloadit.png'),
-                        ),
+              ? Image.network(imageURL!)
+              : image != null
+              ? Image.file(image!)
+              : Image(
+            image: AssetImage('assets/transloadit.png'),
+          ),
         ],
       ),
     );

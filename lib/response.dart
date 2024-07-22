@@ -12,7 +12,7 @@ class TransloaditResponse {
   late Map<String, String> _headers;
 
   /// Constructor function to create a TransloaditResponse from a Response
-  TransloaditResponse(Response response) {
+  TransloaditResponse(http.Response response) {
     _data = jsonDecode(response.body);
     _statusCode = response.statusCode;
     _headers = response.headers;

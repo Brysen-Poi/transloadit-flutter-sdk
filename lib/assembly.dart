@@ -51,28 +51,38 @@ class TransloaditAssembly extends TransloaditOptions {
   }
 
   /// Uploads files to the Assembly via the Tus protocol.
-  Future<void> tusUpload(String assemblyURL, String tusURL,
-      {Function(double)? onProgress, Function()? onComplete}) async {
+  Future<void> tusUpload(String assemblyURL, String tusURL, Duration timeout, {Function(double)? onProgress, Function()? onComplete, Function()? onTimeout}) async {
     Map<String, String> metadata = {"assembly_url": assemblyURL};
     if (files.isNotEmpty) {
       for (var key in files.keys) {
         metadata["fieldname"] = key;
         metadata["filename"] = basename(files[key]?.name ?? '');
 
-        TusClient client = TusClient(Uri.parse(tusURL), files[key]!,
-            metadata: metadata, maxChunkSize: 10 * 1024 * 1024);
+        TusClient client = TusClient(
+            url: tusURL,
+            file:  files[key]!,
+            metadata: metadata,
+            chunkSize: 200 * 1024,
+            cache: TusMemoryCache(),
+            timeout: const Duration(minutes: 1)
+        );
 
-        client.upload(
-          onProgress: (progress) {
-            if (onProgress != null) {
-              onProgress(progress);
+        client.startUpload(
+            onProgress: (int count, int total, http.Response? response) {
+              if (onProgress != null) {
+                onProgress((count/total * 100));
+              }
+            },
+            onComplete: (http.Response? response) {
+              if (onComplete != null) {
+                onComplete();
+              }
+            },
+            onTimeout: (){
+              if (onTimeout != null) {
+                onTimeout();
+              }
             }
-          },
-          onComplete: () {
-            if (onComplete != null) {
-              onComplete();
-            }
-          },
         );
       }
     }
@@ -81,8 +91,7 @@ class TransloaditAssembly extends TransloaditOptions {
   /// Creates the Assembly using the options specified.
   /// [onProgress] returns the progress of the file upload
   /// [onComplete] will call when the file is uploaded and the assembly is processing
-  Future<TransloaditResponse> createAssembly(
-      {Function(double)? onProgress, Function()? onComplete}) async {
+  Future<TransloaditResponse> createAssembly(Duration timeout, {Function(double)? onProgress, Function()? onComplete, Function()? onTimeout}) async {
     final data = super.options;
     final extraData = {
       "tus_num_expected_upload_files": files.length.toString()
@@ -98,16 +107,10 @@ class TransloaditAssembly extends TransloaditOptions {
       await tusUpload(
         response.data["assembly_ssl_url"],
         response.data["tus_url"],
-        onProgress: (progress) {
-          if (onProgress != null) {
-            onProgress(progress);
-          }
-        },
-        onComplete: () {
-          if (onComplete != null) {
-            onComplete();
-          }
-        },
+        timeout,
+        onTimeout: onTimeout,
+        onProgress: onProgress,
+        onComplete: onComplete,
       );
     }
 

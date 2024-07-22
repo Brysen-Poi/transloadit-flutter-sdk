@@ -23,7 +23,7 @@ class TransloaditRequest {
 
     uri = Uri.https(service, assemblyPath, params);
 
-    Response response = await get(uri, headers: headers);
+    http.Response response = await http.get(uri, headers: headers);
 
     return TransloaditResponse(response);
   }
@@ -39,7 +39,7 @@ class TransloaditRequest {
 
     uri = Uri.https(service, assemblyPath, params);
 
-    Response response = await delete(uri, headers: headers, body: params);
+    http.Response response = await http.delete(uri, headers: headers, body: params);
 
     return TransloaditResponse(response);
   }
@@ -55,7 +55,7 @@ class TransloaditRequest {
 
     uri = Uri.https(service, assemblyPath);
 
-    Response response = await put(uri, headers: headers, body: params);
+    http.Response response = await http.put(uri, headers: headers, body: params);
 
     return TransloaditResponse(response);
   }
@@ -78,7 +78,7 @@ class TransloaditRequest {
 
     uri = Uri.https(service, assemblyPath);
 
-    Response response = await post(uri, headers: headers, body: params);
+    http.Response response = await http.post(uri, headers: headers, body: params);
 
     return TransloaditResponse(response);
   }

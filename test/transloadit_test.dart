@@ -184,7 +184,7 @@ void main() {
         );
 
       TransloaditAssembly assembly = transloaditClient.newAssembly();
-      TransloaditResponse tlResponse = await assembly.createAssembly();
+      TransloaditResponse tlResponse = await assembly.createAssembly(const Duration(seconds: 10));
 
       expect(tlResponse.statusCode, 200);
       expect(tlResponse.data["ok"], "ASSEMBLY_COMPLETED");
@@ -242,7 +242,7 @@ void main() {
           transloaditClient.assemblyFromTemplate(templateID: id);
 
       TransloaditResponse tlResponse =
-          await transloaditAssembly.createAssembly();
+          await transloaditAssembly.createAssembly(const Duration(seconds: 10));
 
       expect(tlResponse.statusCode, 200);
       expect(tlResponse.data["ok"], "ASSEMBLY_COMPLETED");
