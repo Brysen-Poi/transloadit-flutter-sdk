@@ -13,7 +13,10 @@ dependencies:
     sdk: flutter
   http: ^1.2.2
   intl: ^0.19.0
-  tusc: ^1.1.0+3
+  tusc:
+    git:
+      url: https://github.com/Brysen-Poi/tusc.git
+      ref: update/1.1.0+4
   cross_file: ^0.3.4+1
   path: ^1.9.0
   universal_io: ^2.2.2

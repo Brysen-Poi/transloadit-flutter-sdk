@@ -499,10 +499,11 @@ packages:
   tusc:
     dependency: "direct main"
     description:
-      name: tusc
-      sha256: d3c6cfec1d3b75c34be5ee210fb37a527efc584956c8b2f77c4738d4f5699e55
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: "update/1.1.0+4"
+      resolved-ref: f14a49d5fb9f5c9998ed690651ae22102c35639d
+      url: "https://github.com/Brysen-Poi/tusc.git"
+    source: git
     version: "1.1.0+3"
   typed_data:
     dependency: transitive
