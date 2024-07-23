@@ -53,6 +53,10 @@ class TransloaditAssembly extends TransloaditOptions {
   /// Uploads files to the Assembly via the Tus protocol.
   Future<void> tusUpload(String assemblyURL, String tusURL, Duration timeout, {Function(double)? onProgress, Function()? onComplete, Function()? onTimeout}) async {
     Map<String, String> metadata = {"assembly_url": assemblyURL};
+
+    // final cacheDirectory =
+    final cacheDir = Platform.isIOS ? await getLibraryDirectory() : await getApplicationDocumentsDirectory();
+
     if (files.isNotEmpty) {
       for (var key in files.keys) {
         metadata["fieldname"] = key;
@@ -63,7 +67,7 @@ class TransloaditAssembly extends TransloaditOptions {
             file:  files[key]!,
             metadata: metadata,
             chunkSize: 200 * 1024,
-            cache: TusMemoryCache(),
+            cache: TusPersistentCache(cacheDir.path),
             timeout: timeout
         );
 
