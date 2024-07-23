@@ -64,7 +64,7 @@ class TransloaditAssembly extends TransloaditOptions {
             metadata: metadata,
             chunkSize: 200 * 1024,
             cache: TusMemoryCache(),
-            timeout: const Duration(minutes: 1)
+            timeout: timeout
         );
 
         client.startUpload(
