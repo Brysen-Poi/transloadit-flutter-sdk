@@ -71,23 +71,27 @@ class TransloaditAssembly extends TransloaditOptions {
             timeout: timeout
         );
 
-        client.startUpload(
-            onProgress: (int count, int total, http.Response? response) {
-              if (onProgress != null) {
-                onProgress((count/total * 100));
+        try{
+          await client.startUpload(
+              onProgress: (int count, int total, http.Response? response) {
+                if (onProgress != null) {
+                  onProgress((count/total * 100));
+                }
+              },
+              onComplete: (http.Response? response) {
+                if (onComplete != null) {
+                  onComplete();
+                }
+              },
+              onTimeout: (){
+                if (onTimeout != null) {
+                  onTimeout();
+                }
               }
-            },
-            onComplete: (http.Response? response) {
-              if (onComplete != null) {
-                onComplete();
-              }
-            },
-            onTimeout: (){
-              if (onTimeout != null) {
-                onTimeout();
-              }
-            }
-        );
+          );
+        }catch(e, st){
+          rethrow;
+        }
       }
     }
   }
